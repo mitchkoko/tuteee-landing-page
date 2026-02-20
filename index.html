@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,15 +19,37 @@
     * { margin:0; padding:0; box-sizing:border-box; }
 
     :root {
+      --bg: #f2f2f2;
+      --text-primary: #0a0a0a;
+      --text-tertiary: #9a9a9a;
+      --accent: #0a0a0a;
+      --white: #ffffff;
+      --card-bg: #ffffff;
+      --border: rgba(10,10,10,0.2);
+      --shadow-light: rgba(0,0,0,0.06);
+      --shadow-medium: rgba(0,0,0,0.1);
+      --shadow-heavy: rgba(0,0,0,0.08);
+      --radial-subtle: rgba(0,0,0,0.03);
+      --button-primary: #0a0a0a;
+      --button-primary-hover: #333333;
+      --button-text: #ffffff;
+    }
+
+    [data-theme="dark"] {
       --bg: #292929;
-      --bg-secondary: #2a2a2a;
       --text-primary: #ffffff;
-      --text-secondary: #e0e0e0;
       --text-tertiary: #a0a0a0;
-      --accent: #404040;
+      --accent: #ffffff;
+      --white: #292929;
+      --card-bg: #333333;
+      --border: #404040;
+      --shadow-light: rgba(0,0,0,0.2);
+      --shadow-medium: rgba(0,0,0,0.3);
+      --shadow-heavy: rgba(0,0,0,0.3);
+      --radial-subtle: rgba(255,255,255,0.03);
       --button-primary: #333333;
       --button-primary-hover: #404040;
-      --border: #404040;
+      --button-text: #ffffff;
     }
 
     body {
@@ -36,20 +58,58 @@
       color: var(--text-primary);
       overflow-x: hidden;
       position: relative;
+      transition: background 0.4s ease, color 0.4s ease;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Subtle background pattern */
-    body::before {
+    /* Subtle background pattern for dark mode */
+    [data-theme="dark"] body::before {
       content: '';
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: 
+      background:
         radial-gradient(circle at 20% 80%, rgba(64,64,64,0.1) 0%, transparent 50%),
         radial-gradient(circle at 80% 20%, rgba(64,64,64,0.1) 0%, transparent 50%);
       z-index: 1;
       pointer-events: none;
     }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      z-index: 100;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: var(--card-bg);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+      box-shadow: 0 2px 10px var(--shadow-light);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 20px var(--shadow-medium);
+    }
+    .theme-toggle:active { transform: scale(0.95); }
+    .theme-toggle svg {
+      width: 18px;
+      height: 18px;
+      color: var(--text-primary);
+      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease;
+    }
+    .theme-toggle .icon-sun { display: none; }
+    .theme-toggle .icon-moon { display: block; }
+    [data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+    [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
 
     .container {
       min-height: 100vh;
@@ -81,7 +141,7 @@
       content: '';
       position: absolute;
       width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+      background: radial-gradient(circle, var(--radial-subtle) 0%, transparent 70%);
       border-radius: 50%;
       z-index: -1;
     }
@@ -90,34 +150,29 @@
       width: 100%;
       max-width: 460px;
       object-fit: contain;
-      filter: drop-shadow(0 25px 50px rgba(0,0,0,0.3));
+      border-radius: 30px;
+      filter: drop-shadow(0 25px 50px var(--shadow-heavy));
       animation: float 6s ease-in-out infinite;
       transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
-      border-radius: 30px;
     }
     .app-demo-img:hover {
       transform: translateY(-5px) scale(1.02);
+      filter: drop-shadow(0 30px 60px var(--shadow-medium));
+    }
+
+    /* Video swap for dark mode */
+    .app-demo-img.light-img { display: block; }
+    .app-demo-img.dark-img  { display: none; }
+    [data-theme="dark"] .app-demo-img.light-img { display: none; }
+    [data-theme="dark"] .app-demo-img.dark-img  { display: block; }
+    [data-theme="dark"] .app-demo-img {
+      filter: drop-shadow(0 25px 50px rgba(0,0,0,0.3));
+    }
+    [data-theme="dark"] .app-demo-img:hover {
       filter: drop-shadow(0 30px 60px rgba(0,0,0,0.4));
     }
 
     .content { animation: fadeIn 0.8s ease-out; }
-
-    .logo {
-      width: 56px; height: 56px;
-      margin-bottom: 3rem;
-      opacity: 0;
-      animation: fadeInUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.3s forwards;
-      background: var(--text-primary);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 24px;
-      color: var(--bg);
-      font-weight: bold;
-    }
-    .logo:hover { transform: scale(1.1); transition: transform 0.3s ease; }
 
     @keyframes fadeIn { from {opacity:0} to {opacity:1} }
     @keyframes fadeInUp {
@@ -172,38 +227,21 @@
       transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
     }
 
-    /* App Store - Dark theme */
+    /* App Store button */
     .download-btn.app-store {
       background: var(--button-primary);
+      color: var(--button-text);
+      border: 2px solid var(--button-primary);
+    }
+    /* Google Play button */
+    .download-btn.google-play {
+      background: transparent;
       color: var(--text-primary);
       border: 2px solid var(--border);
-    }
-    .download-btn.app-store::before {
-      content: '';
-      position: absolute;
-      top:50%; left:50%;
-      width:0; height:0;
-      border-radius:50%;
-      background:rgba(255,255,255,0.1);
-      transform:translate(-50%,-50%);
-      transition:width 0.6s, height 0.6s;
-    }
-    .download-btn.app-store:hover::before {
-      width:300px; height:300px;
-    }
-    .download-btn.app-store:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      background: var(--button-primary-hover);
-      border-color: var(--text-tertiary);
+      backdrop-filter: blur(10px);
     }
 
-    /* Google Play - Dark theme (matching App Store style) */
-    .download-btn.google-play {
-      background: var(--button-primary);
-      color: var(--text-primary);
-      border: 2px solid var(--border);
-    }
+    .download-btn.app-store::before,
     .download-btn.google-play::before {
       content: '';
       position: absolute;
@@ -214,14 +252,35 @@
       transform:translate(-50%,-50%);
       transition:width 0.6s, height 0.6s;
     }
+
+    .download-btn.app-store:hover::before,
     .download-btn.google-play:hover::before {
       width:300px; height:300px;
     }
+
+    .download-btn.app-store:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px var(--shadow-medium);
+      border-color: #444;
+    }
     .download-btn.google-play:hover {
       transform: translateY(-3px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      box-shadow: 0 10px 30px var(--shadow-medium);
+      border-color: var(--text-primary);
+    }
+
+    /* Dark mode: both buttons match */
+    [data-theme="dark"] .download-btn.app-store,
+    [data-theme="dark"] .download-btn.google-play {
+      background: var(--button-primary);
+      color: var(--text-primary);
+      border: 2px solid var(--border);
+    }
+    [data-theme="dark"] .download-btn.app-store:hover,
+    [data-theme="dark"] .download-btn.google-play:hover {
       background: var(--button-primary-hover);
       border-color: var(--text-tertiary);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
 
     .download-btn svg { width:20px; height:20px; z-index:1 }
@@ -242,7 +301,6 @@
       }
       .app-showcase { order: 1 }
       .content      { order: 2 }
-      .logo { margin: 0 auto 2rem }
       .download-buttons { flex-direction: column; align-items: center }
       .app-demo-img { max-width: 380px }
     }
@@ -252,17 +310,49 @@
       h1 { font-size: 3rem; margin-bottom: 0.75rem }
       .subtitle { font-size: 1.25rem; margin-bottom: 1rem }
       .app-demo-img { max-width: 260px }
-      .logo { width: 48px; height: 48px; font-size: 20px }
     }
   </style>
 </head>
 <body>
+  <!-- Theme Toggle -->
+  <button class="theme-toggle" aria-label="Toggle dark mode" onclick="toggleTheme()">
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="5"/>
+      <line x1="12" y1="1" x2="12" y2="3"/>
+      <line x1="12" y1="21" x2="12" y2="23"/>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+      <line x1="1" y1="12" x2="3" y2="12"/>
+      <line x1="21" y1="12" x2="23" y2="12"/>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+  </button>
+
   <div class="container">
     <div class="content-wrapper">
       <div class="app-showcase">
-        <img src="assets/tuteee_demo.png"
-             alt="Tuteee app interface showing math tutor chat."
-             class="app-demo-img">
+        <video
+          class="app-demo-img light-img"
+          autoplay
+          loop
+          muted
+          playsinline>
+          <source src="assets/tuteee_demo_light.webm" type="video/webm">
+          <source src="assets/tuteee_demo_light.mov" type="video/quicktime">
+        </video>
+        <video
+          class="app-demo-img dark-img"
+          autoplay
+          loop
+          muted
+          playsinline>
+          <source src="assets/tuteee_demo_dark.webm" type="video/webm">
+          <source src="assets/tuteee_demo_dark.mov" type="video/quicktime">
+        </video>
       </div>
       <div class="content">
         <h1>Tuteee</h1>
@@ -284,9 +374,26 @@
           </a>
         </div>
 
-        <p class="footer-note">Created with ❤️ by Mitch Koko</p>
+        <p class="footer-note">Created with ❤️ by <a href="https://mitchkoko.app" style="color: var(--text-tertiary); text-decoration: underline; text-underline-offset: 3px;">Mitch Koko</a></p>
       </div>
     </div>
   </div>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    }
+
+    // Load saved theme, default to dark
+    (function() {
+      const saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+      }
+    })();
+  </script>
 </body>
 </html>
