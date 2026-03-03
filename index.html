@@ -17,6 +17,12 @@
 
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+
+    ::selection {
+      background: var(--accent);
+      color: var(--white);
+    }
 
     :root {
       --bg: #f2f2f2;
@@ -30,9 +36,8 @@
       --shadow-medium: rgba(0,0,0,0.1);
       --shadow-heavy: rgba(0,0,0,0.08);
       --radial-subtle: rgba(0,0,0,0.03);
-      --button-primary: #0a0a0a;
-      --button-primary-hover: #333333;
-      --button-text: #ffffff;
+      --button-primary: #ffffff;
+      --button-primary-hover: #ebebeb;
     }
 
     [data-theme="dark"] {
@@ -49,7 +54,6 @@
       --radial-subtle: rgba(255,255,255,0.03);
       --button-primary: #333333;
       --button-primary-hover: #404040;
-      --button-text: #ffffff;
     }
 
     body {
@@ -60,6 +64,8 @@
       position: relative;
       transition: background 0.4s ease, color 0.4s ease;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
     }
 
     /* Subtle background pattern for dark mode */
@@ -112,7 +118,7 @@
     [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
 
     .container {
-      min-height: 100vh;
+      height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -154,16 +160,6 @@
       transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
       border-radius: 30px;
     }
-    .app-demo-img:hover {
-      transform: translateY(-5px) scale(1.02);
-      filter: drop-shadow(0 30px 60px rgba(0,0,0,0.4));
-    }
-
-    /* Video swap for dark mode */
-    .app-demo-img.light-img { display: block; }
-    .app-demo-img.dark-img  { display: none; }
-    [data-theme="dark"] .app-demo-img.light-img { display: none; }
-    [data-theme="dark"] .app-demo-img.dark-img  { display: block; }
 
     .content { animation: fadeIn 0.8s ease-out; }
 
@@ -190,6 +186,7 @@
 
     .subtitle {
       font-size: clamp(1.125rem, 2vw, 1.5rem);
+      font-weight: 300;
       letter-spacing: 0.02em;
       color: var(--text-tertiary);
       margin-bottom: 3rem;
@@ -220,18 +217,11 @@
       transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
     }
 
-    /* App Store button */
-    .download-btn.app-store {
-      background: var(--button-primary);
-      color: var(--button-text);
-      border: 2px solid var(--button-primary);
-    }
-    /* Google Play button */
+    .download-btn.app-store,
     .download-btn.google-play {
-      background: transparent;
+      background: var(--button-primary);
       color: var(--text-primary);
       border: 2px solid var(--border);
-      backdrop-filter: blur(10px);
     }
 
     .download-btn.app-store::before,
@@ -245,35 +235,17 @@
       transform:translate(-50%,-50%);
       transition:width 0.6s, height 0.6s;
     }
-
     .download-btn.app-store:hover::before,
     .download-btn.google-play:hover::before {
       width:300px; height:300px;
     }
 
-    .download-btn.app-store:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 30px var(--shadow-medium);
-      border-color: #444;
-    }
+    .download-btn.app-store:hover,
     .download-btn.google-play:hover {
       transform: translateY(-3px);
-      box-shadow: 0 10px 30px var(--shadow-medium);
-      border-color: var(--text-primary);
-    }
-
-    /* Dark mode: both buttons match */
-    [data-theme="dark"] .download-btn.app-store,
-    [data-theme="dark"] .download-btn.google-play {
-      background: var(--button-primary);
-      color: var(--text-primary);
-      border: 2px solid var(--border);
-    }
-    [data-theme="dark"] .download-btn.app-store:hover,
-    [data-theme="dark"] .download-btn.google-play:hover {
       background: var(--button-primary-hover);
       border-color: var(--text-tertiary);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      box-shadow: 0 10px 30px var(--shadow-medium);
     }
 
     .download-btn svg { width:20px; height:20px; z-index:1 }
@@ -285,24 +257,45 @@
       opacity: 0;
       animation: fadeInUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.8s forwards;
     }
+    .footer-note a {
+      transition: color 0.3s ease;
+    }
+    .footer-note a:hover {
+      color: var(--text-primary);
+    }
 
     @media (max-width: 768px) {
+      .container {
+        height: auto;
+        min-height: 100vh;
+        padding: 5rem 1.5rem 2.5rem;
+      }
       .content-wrapper {
         grid-template-columns: 1fr;
-        gap: 1rem;
+        gap: 2.5rem;
         text-align: center;
       }
       .app-showcase { order: 1 }
       .content      { order: 2 }
-      .download-buttons { flex-direction: column; align-items: center }
-      .app-demo-img { max-width: 380px }
+      .app-demo-img { max-width: 300px }
+      .subtitle { margin-bottom: 2rem }
+      .download-buttons {
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 2.5rem;
+        gap: 0.75rem;
+      }
+      .download-btn { justify-content: center }
     }
 
     @media (max-width: 480px) {
-      .container { padding: 1.5rem }
-      h1 { font-size: 3rem; margin-bottom: 0.75rem }
-      .subtitle { font-size: 1.25rem; margin-bottom: 1rem }
-      .app-demo-img { max-width: 260px }
+      .container { padding: 4rem 1.25rem 2rem }
+      h1 { font-size: 2.75rem; margin-bottom: 0.5rem }
+      .subtitle { font-size: 1.1rem; margin-bottom: 1.5rem }
+      .app-demo-img { max-width: 240px }
+      .download-buttons { margin-bottom: 2rem }
+      .download-btn { padding: 16px 28px; font-size: 0.875rem }
+      .footer-note { font-size: 0.75rem }
     }
   </style>
 </head>
@@ -329,16 +322,7 @@
     <div class="content-wrapper">
       <div class="app-showcase">
         <video
-          class="app-demo-img light-img"
-          autoplay
-          loop
-          muted
-          playsinline>
-          <source src="assets/tuteee_demo_light.mp4" type="video/mp4">
-          <source src="assets/tuteee_demo_light.mov" type="video/quicktime">
-        </video>
-        <video
-          class="app-demo-img dark-img"
+          class="app-demo-img"
           autoplay
           loop
           muted
