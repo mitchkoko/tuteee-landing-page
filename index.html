@@ -8,7 +8,7 @@
   <meta property="og:title" content="Tuteee – Personal Math Tutor">
   <meta property="og:description" content="Your personal AI math tutor for mastering mathematics.">
   <meta property="og:type" content="website">
-  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💬</text></svg>">
 
   <!-- Bebas Neue + Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -224,6 +224,13 @@
       border: 2px solid var(--border);
     }
 
+    /* Light mode: App Store button is dark */
+    .download-btn.app-store {
+      background: var(--accent);
+      color: var(--white);
+      border-color: var(--accent);
+    }
+
     .download-btn.app-store::before,
     .download-btn.google-play::before {
       content: '';
@@ -240,9 +247,28 @@
       width:300px; height:300px;
     }
 
-    .download-btn.app-store:hover,
     .download-btn.google-play:hover {
       transform: translateY(-3px);
+      background: var(--button-primary-hover);
+      border-color: var(--text-tertiary);
+      box-shadow: 0 10px 30px var(--shadow-medium);
+    }
+    .download-btn.app-store:hover {
+      transform: translateY(-3px);
+      background: #333;
+      border-color: #333;
+      box-shadow: 0 10px 30px var(--shadow-medium);
+    }
+
+    /* Dark mode: both buttons unified */
+    [data-theme="dark"] .download-btn.app-store,
+    [data-theme="dark"] .download-btn.google-play {
+      background: var(--button-primary);
+      color: var(--text-primary);
+      border: 2px solid var(--border);
+    }
+    [data-theme="dark"] .download-btn.app-store:hover,
+    [data-theme="dark"] .download-btn.google-play:hover {
       background: var(--button-primary-hover);
       border-color: var(--text-tertiary);
       box-shadow: 0 10px 30px var(--shadow-medium);
